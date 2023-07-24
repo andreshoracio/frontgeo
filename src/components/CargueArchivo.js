@@ -2,26 +2,33 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const CargueArchivo = () => {
-  // To create formatted data serializable to json
-  const [formData, setFormData] = useState({
+// To create formatted data serializable to json
+const [formData, setFormData] = useState({
     nombre: "",
     tipo: "",
     detalle: "",
     archivo: null,
-  });
+});
 
-  // To add keys with value to the serializable formatted data
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+// To add keys with value to the serializable formatted data
+const handleChange = (e) => {
+    const { name, files } = e.target;
+    if (name === 'archivo') {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            name: files[0],
+        }));
+    } else {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            name: e.target.value,
+        }));
+    }
+};
 
-  console.log(formData.nombre, formData.detalle, formData.tipo);
+// console.log(formData.nombre, formData.detalle, formData.tipo);
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     const uploadData = new FormData();
@@ -30,8 +37,6 @@ const CargueArchivo = () => {
     uploadData.append("detalle", formData.detalle);
     uploadData.append("archivo", formData.archivo);
 
-    console.log(uploadData.get("archivo"));
-
     try {
         const response = await axios.post("http://127.0.0.1:8000/recibir", uploadData);
         console.log(response);
@@ -39,19 +44,19 @@ const CargueArchivo = () => {
         console.error(error);
     }
     
-  };
+};
 
-  return (
+return (
     <div className="container mt-5">
-      <div className="row">
+    <div className="row">
         <div className="col">
-          <h2>Cargue Archivos</h2>
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <h2>Cargue Archivos</h2>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="mb-3">
-              <label htmlFor="nombre" className="form-label">
+            <label htmlFor="nombre" className="form-label">
                 Nombre (utilice minúsculas y no tildes):
-              </label>
-              <input
+            </label>
+            <input
                 type="text"
                 className="form-control"
                 id="nombre"
@@ -59,50 +64,50 @@ const CargueArchivo = () => {
                 value={formData.nombre}
                 onChange={handleChange}
                 aria-describedby="emailHelp"
-              />
+            />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="archivo" className="form-label">
+            <label htmlFor="archivo" className="form-label">
                 Archivo:
-              </label>
-              <input
+            </label>
+            <input
                 type="file"
                 className="form-control"
                 id="archivo"
                 name="archivo"
                 onChange={handleChange}
                 aria-describedby="emailHelp"
-              />
+            />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="tipo" className="form-label">
+            <label htmlFor="tipo" className="form-label">
                 Tipo de proyecto:
-              </label>
-              <select
+            </label>
+            <select
                 className="form-control"
                 id="tipo"
                 name="tipo"
                 value={formData.tipo}
                 onChange={handleChange}
                 aria-describedby="emailHelp"
-              >
+            >
                 <option value="">Seleccione un tipo de archivo</option>
                 <option value="nivelacion">Nivelación</option>
                 <option value="gravterrabs">Gravedad terrestre absoluta</option>
                 <option value="gravterrrel">Gravedad terrestre relativa</option>
                 <option value="gravedades">
-                  Gravedades terrestres absolutas y relativas
+                Gravedades terrestres absolutas y relativas
                 </option>
-              </select>
+            </select>
             </div>
 
             <div className="mb-3">
-              <label htmlFor="detalle" className="form-label">
+            <label htmlFor="detalle" className="form-label">
                 Detalle:
-              </label>
-              <input
+            </label>
+            <input
                 type="text"
                 className="form-control"
                 id="detalle"
@@ -110,17 +115,17 @@ const CargueArchivo = () => {
                 value={formData.detalle}
                 onChange={handleChange}
                 aria-describedby="emailHelp"
-              />
+            />
             </div>
 
             <button type="submit" className="btn btn-outline-primary">
-              Submit
+            Submit
             </button>
-          </form>
+        </form>
         </div>
-      </div>
     </div>
-  );
+    </div>
+);
 };
 
 export default CargueArchivo;
