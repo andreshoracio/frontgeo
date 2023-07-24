@@ -16,12 +16,12 @@ const handleChange = (e) => {
     if (name === 'archivo') {
         setFormData((prevFormData) => ({
             ...prevFormData,
-            name: files[0],
+            [name]: files[0],
         }));
     } else {
         setFormData((prevFormData) => ({
             ...prevFormData,
-            name: e.target.value,
+            [name]: e.target.value,
         }));
     }
 };
