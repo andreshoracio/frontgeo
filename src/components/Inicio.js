@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 
 const Inicio = () => {
+
     return (
         <div className="container mt-5">
             <div className="row">
@@ -14,14 +15,15 @@ const Inicio = () => {
                         <li className="list-group-item">
                             <Link className="right" to="/preprocesarArchivo">Para procesar archivos crudos en conjunto</Link>
                         </li>
-                        <li className="list-group-item">A third item</li>
-                        <li className="list-group-item">A fourth item</li>
-                        <li className="list-group-item">And a fifth one</li>
+                        <li className="list-group-item">
+                            <Link className="right" to="/consultasGraficas">Visor espacial de archivos</Link>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     );
+    
 }
 
 export default Inicio;

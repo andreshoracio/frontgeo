@@ -4,10 +4,6 @@ import Cookies from "js-cookie";
 import useProjectsEffect from "./UseProjectEffect";
 import style from "../static/style.css"
 
-// const getCSRFToken = () => {
-//     const csrfCookie = document.cookie.match(/(^|;) ?csrftoken=([^;]*)(;|$)/);
-//     return csrfCookie ? csrfCookie[2] : null;
-// };
 
 // Items con estilo que depende de la función handleClick
 const SelectableItem = ({ item, isSelected, onSelect }) => {
@@ -210,11 +206,6 @@ const Submit = ({ selectedTool, setSelectedTool, selectedItems, setSelectedItems
         e.preventDefault();
 
         // Crear una forma contenedora de datos
-        // const uploadData = {
-        //     'tool': JSON.stringify(selectedTool),
-        //     'item': JSON.stringify(selectedItems)
-        // }
-
         const uploadData = new FormData();
         uploadData.append('tool', selectedTool);
         uploadData.append('item', selectedItems);

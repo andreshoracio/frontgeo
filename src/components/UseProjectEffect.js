@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 
 const useProjectsEffect = () => {
+  
     const [projects, setProjects] = useState([]);
   
     useEffect(() => {
