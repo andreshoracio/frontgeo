@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from "react";
-import useEfectoTraerProyectos from "./EfectoTraerProyectos"
+import useEfectoTraerProyectos from "./EfectoTraerProyectos";
+import useEfectoTraerPuntosPorProyecto from "./EfectoTraerPuntosPorProyecto";
+import useOsmVisualizer from "./Spatial";
 import axios from "axios";
 
 
 // Items con estilo que depende de la función handleClick
 const SelectableItem = ({ item, isSelected, onSelect }) => {
-
-    console.log(item.pk);
 
     return (
         <div className="selectable"
@@ -31,7 +31,7 @@ const SelectableItemList = ({ items, selectedItems, setSelectedItems }) => {
 
     // Agrega o elimina items del Hook selectedItems
     const handleClick = (id) => {
-
+    
     // Where id is the key of the element
 
         setSelectedItems((prevSelectedItems) => {
@@ -76,11 +76,10 @@ const Inicio = () => {
 
     const proyectos = useEfectoTraerProyectos("http://127.0.0.1:8000/visual/enviar_proyectos_visuales");
     const [selectedItems, setSelectedItems] = useState([]);
-
     var subProject = proyectos.filter((item) => selectedItems.includes(item.pk));
-    subProject = subProject.map(item => item.fields.archivo_origen);
+    const puntos = useEfectoTraerPuntosPorProyecto("http://127.0.0.1:8000/visual/enviar_puntos_visuales", subProject);
 
-    // aofid
+    // Renderar puntos
     return (
 
         <div className="container mt-5">
@@ -91,8 +90,11 @@ const Inicio = () => {
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems} />
             
+            {/* <div>
+                osm
+            </div> */}
+
         </div>
-        
     );
 
 }

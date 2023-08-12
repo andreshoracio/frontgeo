@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 
 const useEfectoTraerProyectos = (url) => {
@@ -6,7 +8,9 @@ const useEfectoTraerProyectos = (url) => {
     const [projects, setProjects] = useState([]);
   
     useEffect(() => {
+
         const getRequest = async (callback) => {
+
             try {
 
                 const response = await fetch(
@@ -21,8 +25,11 @@ const useEfectoTraerProyectos = (url) => {
                 callback(array);
 
             } catch (error) {
+
                 console.error(error);
+                
             }
+
         };
     
         const myCallback = (element) => {
@@ -31,7 +38,7 @@ const useEfectoTraerProyectos = (url) => {
     
         getRequest(myCallback);
 
-    }, [projects]);
+    }, []);
 
     return projects;
 };
