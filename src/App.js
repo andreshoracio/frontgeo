@@ -9,6 +9,7 @@ import Contacto from './components/Contacto';
 import Inicio from './components/Inicio';
 import CargueArchivo from './components/CargueArchivo';
 import PreprocesarArchivos from './components/PreprocesarArchivos';
+import ConsultasGraficas from './components/ConsultasGraficas';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/contacto' exact element={<Contacto></Contacto>}></Route>
         <Route path='/cargarArchivo' exact element={<CargueArchivo></CargueArchivo>}></Route>
         <Route path='/preprocesarArchivo' exact element={<PreprocesarArchivos></PreprocesarArchivos>}></Route>
+        <Route path='/consultasGraficas' exact element={<ConsultasGraficas></ConsultasGraficas>}></Route>
       </Routes>
 
     </Router>
