@@ -3,42 +3,30 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 
-const useEfectoTraerPuntosPorProyecto = (url, proyectos) => {
+const useEfectoTraerPuntosPorProyecto = (url, subProject) => {
 
-    const [pks, setPks] = useState([]);
-    
+    // const [pks, setPks] = useState([]);
     const [points, setPoints] = useState([]);
-  
+
+
     useEffect(() => {
 
         const getRequest = async (callback) => {
 
+            // Crear una forma contenedora de datos
+            const uploadData = new FormData();
+            uploadData.append('projects', subProject);
+
             try {
-                
-                proyectos.forEach(element => {
-
-                    setPks((prevSelectedItems) => {
-
-                        if (prevSelectedItems.includes(element.pk)) {
-                            return prevSelectedItems.filter((pk) => pk !== element.pk);
-                        } else {
-                            return [...prevSelectedItems, element.pk];
-                        }
-            
-                    });
-
-                });
-
-                pks.forEach(element => {
-                    console.log(element.pk);
-                });
 
                 const response = await fetch(
+
                     url,
                     {
                     method: "POST",
-                    body: JSON.stringify(pks)
+                    body: uploadData
                     }
+
                 );
                 
                 const data = await response.json();

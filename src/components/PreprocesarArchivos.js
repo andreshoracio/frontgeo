@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import useProjectsEffect from "./UseProjectEffect";
-import style from "../static/style.css"
-
+import "../static/style.css";
 
 // Items con estilo que depende de la función handleClick
 const SelectableItem = ({ item, isSelected, onSelect }) => {

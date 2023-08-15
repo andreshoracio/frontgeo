@@ -1,3 +1,22 @@
 .selectable {
+    width: 80%;
+}
+
+.leaflet-map {
     width: 40%;
+    height: 300px; /* Set an appropriate height */
+}
+
+.flex-container {
+    display: flex;
+}
+
+.left-panel {
+    flex: 1;
+    padding: 10px;
+}
+
+.right-panel {
+    flex: 1;
+    padding: 10px;
 }
