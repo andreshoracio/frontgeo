@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import useEfectoTraerProyectos from "./EfectoTraerProyectos";
-import useEfectoTraerPuntosPorProyecto from "./EfectoTraerPuntosPorProyecto";
-import useOsmVisualizer from "./Spatial";
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import style from "../static/style.css";
@@ -29,14 +27,27 @@ const SelectableItem = ({ item, isSelected, onSelect }) => {
 
 
 // Lista de items
-const SelectableItemList = ({ items, selectedItems, setSelectedItems, data, setData}) => {
+const SelectableItemList = ({ items, selectedItems, setSelectedItems, data, setData, mapRef }) => {
 
-    const [isLoading, setIsLoading] = useState(false);  
+    // To avoid initialize twice the map
+    // const [isLoading, setIsLoading] = useState(false);
 
     // Agrega o elimina items del Hook selectedItems
     const handleClick = async (id) => {
 
-        setIsLoading(true);
+        // setIsLoading(true);
+    
+        // Where id is the key of the element
+        setSelectedItems((prevSelectedItems) => {
+
+            if (prevSelectedItems.includes(id)) {
+                return prevSelectedItems.filter((pk) => pk !== id);
+            } else {
+                return [...prevSelectedItems, id];
+            }
+            
+        });
+
         // Crear una forma contenedora de datos
         const uploadData = new FormData();
         uploadData.append('id', selectedItems);
@@ -53,8 +64,8 @@ const SelectableItemList = ({ items, selectedItems, setSelectedItems, data, setD
 
             );
             
-            const data = await response.json();
-            const array = JSON.parse(data.data);
+            const data_f = await response.json();
+            const array = JSON.parse(data_f.data);
             setData(array);
 
         } catch (error) {
@@ -62,17 +73,46 @@ const SelectableItemList = ({ items, selectedItems, setSelectedItems, data, setD
             console.error(error);
             
         }
-    
-        // Where id is the key of the element
-        setSelectedItems((prevSelectedItems) => {
 
-            if (prevSelectedItems.includes(id)) {
-                return prevSelectedItems.filter((pk) => pk !== id);
-            } else {
-                return [...prevSelectedItems, id];
-            }
-            
-        });
+        if ( data === null ) {
+
+            console.log('a');
+            console.log(mapRef.current);
+            // mapRef.current.clearLayers();
+
+        } else {
+
+            // Add puntos to the map
+            data.forEach((punto) => {
+
+                var markerOptions = {
+                    color: "green",
+                    fillColor: "yellow",
+                    fillOpacity: 0.8,
+                    radius: 0.8
+                };
+
+                var marker;
+
+                // Extract latitude and longitude from punto.coordinates string
+                const regex = /POINT \(([-\d.]+) ([-\d.]+)\)/;
+                const matches = punto.fields.posicion.match(regex);
+
+                if (matches) {
+
+                    const longitude = parseFloat(matches[1]);
+                    const latitude = parseFloat(matches[2]);
+
+                    // Create marker with extracted latitude and longitude
+                    marker = L.circle([latitude, longitude], markerOptions);
+                    marker.addTo(mapRef.current);
+
+                }
+                
+            });
+
+        }
+
 
     };
 
@@ -107,11 +147,26 @@ const Inicio = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     var subProject = proyectos.filter((item) => selectedItems.includes(item.pk));
     const [data, setData] = useState(null);
-    const [puntos, setPuntos] = useState([])
-    var map = useOsmVisualizer(data);
 
-    // Update the puntos state
-    // setPuntos(useEfectoTraerPuntosPorProyecto("http://127.0.0.1:8000/visual/enviar_puntos_visuales", subProject));
+    // Mapa
+    const mapRef = useRef(null);
+    if (!mapRef.current) {
+
+        console.log('b', !mapRef.current);
+
+        // Create a Leaflet map
+        var map = L.map("leaflet-map").setView([4.691901, -74.074223], 5);
+
+        console.log('c', !mapRef.current);
+
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: "© OpenStreetMap contributors"
+        }).addTo(map);
+
+        mapRef.current = map;
+    
+    }
 
     // Renderar puntos
     return (
@@ -122,8 +177,6 @@ const Inicio = () => {
 
             <div className="flex-container">
 
-                <div id="leaflet-map" className="leaflet-map right-panel"></div>
-
                 <div className="left-panel">
 
                     <SelectableItemList
@@ -132,9 +185,12 @@ const Inicio = () => {
                         setSelectedItems={setSelectedItems}
                         data={data}
                         setData={setData}
+                        mapRef={mapRef}
                     />
 
                 </div>
+
+                <div id="leaflet-map" className="leaflet-map right-panel"></div>
 
             </div>
             
