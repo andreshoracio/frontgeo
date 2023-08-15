@@ -14,10 +14,12 @@ const useEfectoTraerProyectos = (url) => {
             try {
 
                 const response = await fetch(
+
                     url,
                     {
                     method: "GET",
                     }
+                    
                 );
                 
                 const data = await response.json();
