@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import useProjectsEffect from "./UseProjectEffect";
 import "../static/style.css";
 
+
 // Items con estilo que depende de la función handleClick
 const SelectableItem = ({ item, isSelected, onSelect }) => {
 
