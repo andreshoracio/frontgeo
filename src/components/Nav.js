@@ -22,6 +22,11 @@ const Nav = () => {
               <li className="nav-item">
                 <Link className="nav_link" aria-current="page" to="/contacto">Contacto</Link>
               </li>
+              <li>              
+              <a  data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">                
+                <i className="bi bi-person-circle"></i>              
+              </a>
+              </li>
               {/* <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
@@ -41,6 +46,34 @@ const Nav = () => {
               <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form> */}
+          </div>
+        </div>
+
+
+
+        <div className="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title" id="offcanvasExampleLabel">Login</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
+            <div>
+              
+            </div>
+            <div className="dropdown mt-3">
+            <form>
+              <div className="mb-3">
+                <label for="exampleInputEmail1" className="form-label">Email address</label>
+                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></input>
+                {/* <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div> */}
+              </div>
+              <div className="mb-3">
+                <label for="exampleInputPassword1" className="form-label">Password</label>
+                <input type="password" className="form-control" id="exampleInputPassword1"></input>
+              </div>              
+              <button type="submit" className="btn btn-primary form-control">Submit</button>
+            </form>
+            </div>
           </div>
         </div>
       </nav>
